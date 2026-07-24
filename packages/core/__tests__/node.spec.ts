@@ -291,18 +291,22 @@ describe('node', () => {
     const tracked = new Set<FormKitNode>()
     const originalAdd = rootConfig._add
     const originalRm = rootConfig._rm
+    const remove = vi.fn(originalRm)
     rootConfig._add = (node) => {
       tracked.add(node)
       originalAdd(node)
     }
     rootConfig._rm = (node) => {
       tracked.delete(node)
-      originalRm(node)
+      remove(node)
     }
     const node = createNode({ config: { rootConfig } })
     expect(tracked.has(node)).toBe(true)
     node.destroy()
     expect(tracked.has(node)).toBe(false)
+    expect(remove).toHaveBeenCalledTimes(1)
+    node.destroy()
+    expect(remove).toHaveBeenCalledTimes(1)
   })
 
   it('removes a destroyed child node from its rootConfig (#1667)', () => {

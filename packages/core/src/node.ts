@@ -2997,7 +2997,7 @@ function createConfig(
         return true
       }
       if (prop === '_rmn') {
-        if (target.rootConfig) target.rootConfig._rm(node as FormKitNode)
+        if (target.rootConfig && node) target.rootConfig._rm(node)
         node = undefined
         return true
       }
