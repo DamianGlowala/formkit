@@ -2234,6 +2234,8 @@ function destroy(
   node.store.filter(() => false)
   if (node.parent) {
     node.parent.remove(node)
+  } else {
+    node.config._rmn = node
   }
   deregister(node)
   node.emit('destroyed', node)
